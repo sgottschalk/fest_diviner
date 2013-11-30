@@ -1,5 +1,5 @@
 """
-Django settings for diviner project.
+Django settings for mfp project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ev9bm*(yz#jip0*fsof6k*g0$pmv)w^cobgf_fmrfua-i_(yin'
+SECRET_KEY = '8)nojzq*ovy+v&eg9k&k3&mp2uc5*zgn0odmr=t=c+0rf#poit'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,9 +47,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'diviner.urls'
+ROOT_URLCONF = 'mfp.urls'
 
-WSGI_APPLICATION = 'diviner.wsgi.application'
+WSGI_APPLICATION = 'mfp.wsgi.application'
 
 
 # Database
