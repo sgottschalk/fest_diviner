@@ -6,9 +6,11 @@ from django.db import models
 class Festival(models.Model):
     name = models.CharField(max_length = 100)
     url = models.CharField(max_length = 20, unique = True)
+    lat = models.FloatField()
+    lng = models.FloatField()
     
     def __unicode__(self):
-        return u'[name: %s, url: %s]' % (self.name, self.url)
+        return u'[name: %s, url: %s, lat: %s, lng: %s]' % (self.name, self.url, self.lat, self.lng)
     
 class FestDate(models.Model):
     festival = models.ForeignKey(Festival)

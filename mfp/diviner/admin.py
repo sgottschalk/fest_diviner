@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from diviner.models import Festival, FestDate, Artist
+
+
+admin.site.register(Festival)
+admin.site.register(FestDate)
+admin.site.register(Artist)

@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>{{festival.name}}</title>
+
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'festival.css' %}" />
+    </head>
+
+    <body>
+
+        <h1>{{festival.name}}</h1>
+        <table border="1">
+            <tr>
+                <td></td>
+                {% for date in dates %}
+                <th class="dateCell">{{date.day}}</th>
+                {% endfor %}
+            </tr>
+            {% for artist in artists %}
+            <tr>
+                <td class="artistCell">{{artist.name}}</td>
+                {% for date in dates %}
+                <td>maybe</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+    </body>

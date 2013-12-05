@@ -55,7 +55,7 @@ ROOT_URLCONF = 'mfp.urls'
 WSGI_APPLICATION = 'mfp.wsgi.application'
 
 TEMPLATE_DIRS = (
-    os.path.join(SITE_ROOT, 'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 # Database
@@ -88,3 +88,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
