@@ -24,7 +24,7 @@ class FestDate(models.Model):
 
 class Artist(models.Model):
     mbid = models.CharField(max_length = 36, primary_key = True)
-    songkickid = models.CharField(max_length = 20, unique = True)
+    songkickid = models.CharField(max_length = 20, unique = True, null=True)
     name = models.CharField(max_length = 100)
     festival = models.ForeignKey(Festival)
     
@@ -44,7 +44,13 @@ class MusicBrainzArtist():
         
     def __unicode__(self):
         return u'[mbid: %s, name: %s]' % (self.mbid, self.name)
-        
+
+    def __str__(self):
+        return self.__unicode__()
+
+    def __repr__(self):
+        return self.__unicode__()
+
 class ArtistEventInformation():
     mbid = None
     songkickid = None

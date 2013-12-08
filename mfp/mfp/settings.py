@@ -64,8 +64,8 @@ TEMPLATE_DIRS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'diviner',
-        'USER': 'django',
+        'NAME': 'musicfes_diviner',
+        'USER': 'musicfes_django',
         'PASSWORD': 'huskies',
     }
 }
