@@ -1,3 +1,3 @@
 How to initialize developer database:
-In your local MySQL instance, you need to have a user called 'django' with password 'huskies'. You also need a database called 'diviner'.
+In your local MySQL instance, you need to have a user called 'musicfes_django' with password 'huskies'. You also need a database called 'musicfes_diviner'.
 After doing this, run "python manage.py syncdb" from fest_diviner/mfp to create the django tables and models in the database
