@@ -26,7 +26,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.musicfestivalplanning.com']
 
 
 # Application definition
@@ -87,8 +87,57 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/planner/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+# TODO: Is this the right thing to do?
+STATIC_ROOT = '/home1/musicfes/public_html/planner/static'
+
+# Logging
+
+ADMINS = (
+    ('django_errors', 'django_errors@musicfestivalplanning.com')
+)
+
+# EMAIL_HOST = 'box873.bluehost.com'
+# EMAIL_HOST_PASSWORD = 'django123'
+# EMAIL_HOST_USER = 'django'
+# EMAIL_PORT = 465
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'mysite.log',
+            'formatter': 'verbose'
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'mfp': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
