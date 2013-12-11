@@ -20,7 +20,7 @@
             <tr>
                 <td class="artistCell">{{artist.name}}</td>
                 {% for status in artist.statuses %}
-                <td>{{status}}</td>
+                <td class="status_{{status}}">{{status}}</td>
                 {% endfor %}
             </tr>
             {% endfor %}

@@ -4,3 +4,9 @@
 .artistCell {
     background-color: #85d656;
 }
+.status_no {
+    background-color: red;
+}
+.status_maybe {
+    background-color: yellow;
+}

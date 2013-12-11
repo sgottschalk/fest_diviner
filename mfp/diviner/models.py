@@ -20,9 +20,11 @@ class Festival(models.Model):
     url = models.CharField(max_length=20, unique=True)
     lat = models.FloatField()
     lng = models.FloatField()
+    venue_id = models.CharField(max_length=10)
     
     def __unicode__(self):
-        return u'[name: %s, url: %s, lat: %s, lng: %s]' % (self.name, self.url, self.lat, self.lng)
+        return u'[name: %s, url: %s, lat: %s, lng: %s, venue_id: %s]' % \
+               (self.name, self.url, self.lat, self.lng, self.venue_id)
 
 
 class FestDate(models.Model):
@@ -34,9 +36,10 @@ class FestDate(models.Model):
 
     def __unicode__(self):
         return u'[festival: %s, day: %s]' % (self.festival, self.day)
-    
-    class Meta:
-        unique_together = ('festival', 'day')
+
+    # TODO: db doesn't reflect this yet, so leave it out
+    # class Meta:
+    #     unique_together = ('festival', 'day')
 
 
 class Artist(models.Model):
@@ -56,12 +59,17 @@ class Artist(models.Model):
         dayBuffer = datetime.timedelta(days=3)
         concerts = self.getConcertsForArtist(minDate=startDate - dayBuffer, maxDate=endDate + dayBuffer)
         self.statuses = []
+        # Heavy lifting portion
         for festDate in dates:
             # TODO: do this in a smarter way, processors maybe?
+            # First check if the artist is booked on any of the festival days
             if festDate in concerts:
-                # TODO: make sure it's not this festival!
-                self.statuses.append(DailyStatus.NO)
+                if concerts[festDate].venueInformation.venueId is self.festival.venue_id:
+                    self.statuses.append(DailyStatus.YES)
+                else:
+                    self.statuses.append(DailyStatus.NO)
             else:
+                # TODO: See if sasquatch fits into their tour schedule
                 self.statuses.append(DailyStatus.MAYBE)
         return self
 
@@ -95,7 +103,7 @@ class Artist(models.Model):
         for event in json['results']['event']:
             locObj = event['location']
             venueObj = event['venue']
-            venueInfo = VenueInformation(locObj['lat'], locObj['lng'], locObj['city'], venueObj['displayName'])
+            venueInfo = VenueInformation(locObj['lat'], locObj['lng'], locObj['city'], venueObj['displayName'], venueObj['id'])
             eventDate = parser.parse(event['start']['date']).date()
             eventInfo = EventInformation(eventDate, venueInfo)
             concerts[eventDate] = eventInfo
@@ -161,12 +169,15 @@ class VenueInformation():
     lng = None
     city = None
     venueName = None
+    venueId = None
 
-    def __init__(self, lat, lng, city, venueName):
+    def __init__(self, lat, lng, city, venueName, venueId):
         self.lat = lat
         self.lng = lng
         self.city = city
         self.venueName = venueName
+        self.venueId = venueId
 
     def __unicode__(self):
-        return u'[lat: %s, lng: %s, city: %s, venueName: %s]' % (self.lat, self.lng, self.city, self.venueName)
+        return u'[lat: %s, lng: %s, city: %s, venueName: %s, venueId: %s]' \
+               % (self.lat, self.lng, self.city, self.venueName, self.venueId)
