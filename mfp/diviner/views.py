@@ -9,9 +9,11 @@ class FestivalView(TemplateView):
     
     def get_context_data(self, festival_url, **kwargs):
         context = super(FestivalView, self).get_context_data(**kwargs)
-        festival = Festival.objects.get(url = festival_url)
+        festival = Festival.objects.get(url=festival_url)
         context['festival'] = festival
-        context['dates'] = FestDate.objects.filter(festival = festival)
-        artists = Artist.objects.filter(festival = festival)
-        context['artists'] = artists
+        context['dates'] = festival.festdate_set.all()
+        context['artists'] = festival.artist_set.all()
+        # Retrieve the info
+        for artist in context['artists']:
+            artist.adornStatusPerDay()
         return context

@@ -4,6 +4,8 @@ import musicbrainzngs as mb
 def initializeConnection():
     mb.set_useragent('musicfestivalplanning', '0.1')
 
+# TODO: move this out of this file and into the models. Also, search on SongKick instead of MusicBrainz because id might
+# not match up
 def searchForArtistByName(name):
     initializeConnection()
 

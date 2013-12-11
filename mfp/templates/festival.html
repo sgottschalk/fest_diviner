@@ -19,8 +19,8 @@
             {% for artist in artists %}
             <tr>
                 <td class="artistCell">{{artist.name}}</td>
-                {% for date in dates %}
-                <td>maybe</td>
+                {% for status in artist.statuses %}
+                <td>{{status}}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
