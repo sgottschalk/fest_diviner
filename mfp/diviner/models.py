@@ -59,6 +59,7 @@ class Artist(models.Model):
         for festDate in dates:
             # TODO: do this in a smarter way, processors maybe?
             if festDate in concerts:
+                # TODO: make sure it's not this festival!
                 self.statuses.append(DailyStatus.NO)
             else:
                 self.statuses.append(DailyStatus.MAYBE)
