@@ -90,8 +90,6 @@ class Artist(models.Model):
             'max_date': kwargs.get('maxDate')
         }
 
-        CacheHelpers.getCacheKeyForRequest(requestUrl, requestParams)
-
         # Retrieve and parse the response
         response = CacheHelpers.retrieveRequestJson(requestUrl, requestParams)
         # print response.url

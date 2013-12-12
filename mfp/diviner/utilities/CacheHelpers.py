@@ -1,5 +1,7 @@
-import memcache
-import requests
+import json
+import urllib
+from django.core.cache import cache
+import httplib2
 from diviner.utilities.Constants import cacheTtlSeconds
 
 
@@ -25,13 +27,14 @@ def retrieveRequestJson(url, params):
     :param params: query parameters
     :return: the response
     """
-    mc = memcache.Client(['127.0.0.1:11211'], debug=0)
     cacheKey = getCacheKeyForRequest(url, params)
-    cachedValue = mc.get(cacheKey)
+    cachedValue = cache.get(cacheKey)
     if cachedValue is not None:
         return cachedValue
     else:
-        response = requests.get(url, params=params)
-        jsonResponse = response.json()
-        mc.set(cacheKey, jsonResponse, cacheTtlSeconds)
+        h = httplib2.Http()
+        urlWithParams = url + "?" + urllib.urlencode(params)
+        resp, content = h.request(urlWithParams, "GET")
+        jsonResponse = json.loads(content)
+        cache.set(cacheKey, jsonResponse, cacheTtlSeconds)
         return jsonResponse

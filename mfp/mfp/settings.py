@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os, django
+import os
+import django
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
@@ -112,8 +113,8 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -121,23 +122,40 @@ LOGGING = {
     },
 
     'handlers': {
-        'file': {
+        'debugFile': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'mysite.log',
+            'filename': 'debug.log',
+            'formatter': 'verbose'
+        },
+        'warnFile': {
+            'level': 'WARN',
+            'class': 'logging.FileHandler',
+            'filename': 'warn.log',
             'formatter': 'verbose'
         },
     },
 
     'loggers': {
         'django': {
-            'handlers':['file'],
+            'handlers': ['debugFile'],
             'propagate': True,
-            'level':'DEBUG',
-        },
-        'mfp': {
-            'handlers': ['file'],
             'level': 'DEBUG',
         },
+        'mfp': {
+            'handlers': ['debugFile'],
+            'level': 'DEBUG',
+        },
+        'diviner': {
+            'handlers': ['debugFile', 'warnFile'],
+            'level': 'DEBUG',
+        },
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
