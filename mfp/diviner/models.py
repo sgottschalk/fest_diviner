@@ -1,7 +1,6 @@
 import datetime
 from dateutil import parser
 from django.db import models
-import requests
 
 
 #############################
@@ -9,6 +8,7 @@ import requests
 #############################
 from diviner.utilities import Constants
 from diviner.utilities.Constants import DailyStatus
+from diviner.utilities import CacheHelpers
 
 
 class Festival(models.Model):
@@ -82,7 +82,7 @@ class Artist(models.Model):
         maxDate -- maximum date to request (required)
         """
         # Build the request
-        artistPathTerm = ('mbid:' + self.mbid) if (self.mbid is not None) else (self.songkickid)
+        artistPathTerm = ('mbid:' + self.mbid) if (self.mbid is not None) else self.songkickid
         requestUrl = 'http://api.songkick.com/api/3.0/artists/%s/calendar.json' % artistPathTerm
         requestParams = {
             'apikey': Constants.songKickApiKey,
@@ -90,10 +90,12 @@ class Artist(models.Model):
             'max_date': kwargs.get('maxDate')
         }
 
+        CacheHelpers.getCacheKeyForRequest(requestUrl, requestParams)
+
         # Retrieve and parse the response
-        response = requests.get(requestUrl, params=requestParams)
+        response = CacheHelpers.retrieveRequestJson(requestUrl, requestParams)
         # print response.url
-        json = response.json()['resultsPage']
+        json = response['resultsPage']
         if json['status'] != 'ok':
             return None
         concerts = {}
@@ -103,7 +105,11 @@ class Artist(models.Model):
         for event in json['results']['event']:
             locObj = event['location']
             venueObj = event['venue']
-            venueInfo = VenueInformation(locObj['lat'], locObj['lng'], locObj['city'], venueObj['displayName'], venueObj['id'])
+            venueInfo = VenueInformation(locObj['lat'],
+                                         locObj['lng'],
+                                         locObj['city'],
+                                         venueObj['displayName'],
+                                         venueObj['id'])
             eventDate = parser.parse(event['start']['date']).date()
             eventInfo = EventInformation(eventDate, venueInfo)
             concerts[eventDate] = eventInfo

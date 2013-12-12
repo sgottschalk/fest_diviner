@@ -4,3 +4,5 @@ Django=1.6
 mysql-python=1.2.4
 musicbrainzngs=0.4
 requests=2.0.1
+memcached=1.4.16
+python-memcached=1.53 (pip install python-memcached)

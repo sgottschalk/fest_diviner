@@ -1,4 +1,5 @@
 songKickApiKey='ipBxS0KlUqMwcdST'
+cacheTtlSeconds = 60 * 60
 
 # Enumeration for the different statuses
 class DailyStatus:
