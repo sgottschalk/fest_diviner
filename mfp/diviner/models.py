@@ -185,3 +185,44 @@ class VenueInformation():
     def __unicode__(self):
         return u'[lat: %s, lng: %s, city: %s, venueName: %s, venueId: %s]' \
                % (self.lat, self.lng, self.city, self.venueName, self.venueId)
+
+
+class ArtistSearchResult():
+    displayName = None
+    songkickId = None
+
+    def __init__(self, displayName, songkickId):
+        self.displayName = displayName
+        self.songkickId = songkickId
+
+
+class ArtistSearch():
+    """
+    Model that takes a artist search string and returns a list of ArtistSearchResult models.
+    """
+    searchString = None
+
+    def __init__(self, searchString):
+        self.searchString = searchString
+
+    def executeSearch(self):
+        # Build the request
+        requestUrl = 'http://api.songkick.com/api/3.0/search/artists.json'
+        requestParams = {
+            'apikey': Constants.songKickApiKey,
+            'query': self.searchString
+        }
+
+        # Retrieve and parse the response
+        response = CacheHelpers.retrieveRequestJson(requestUrl, requestParams)
+        searchResults = response['resultsPage']
+        if searchResults['status'] != 'ok':
+            return None
+        results = []
+        for result in searchResults['results']['artist']:
+            mbid = None
+            if result['identifier'] != []:
+                # TODO: Always take the first element?
+                mbid = result['identifier'][0]['mbid']
+            results.append(ArtistSearchResult(result['displayName'], result['id']))
+        return results
