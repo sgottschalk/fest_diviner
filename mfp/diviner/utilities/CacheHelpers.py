@@ -15,7 +15,7 @@ def getCacheKeyForRequest(url, params):
     """
     stringToHash = 'URL:' + url
     for key, value in params.iteritems():
-        stringToHash += key + str(value)
+        stringToHash += key + urllib.quote_plus(str(value))
     return stringToHash.encode('ascii', 'ignore')
 
 
@@ -28,6 +28,7 @@ def retrieveRequestJson(url, params):
     :return: the response
     """
     cacheKey = getCacheKeyForRequest(url, params)
+    print cacheKey
     cachedValue = cache.get(cacheKey)
     if cachedValue is not None:
         return cachedValue

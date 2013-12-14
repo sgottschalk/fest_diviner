@@ -13,7 +13,7 @@
         <h1 id="festivalHeader" data-festival-id="{{festival.url}}">{{festival.name}}</h1>
         <form id="artistSearchForm" method="post">{% csrf_token %}
             <label for="artistSearchBox">Search for artist: </label>
-            <input id="artistSearchBox" name="artistSearchString" type="text" size="40"/>
+            <input id="artistSearchBox" name="artistSearchString" type="text"/>
             <input id="songkickId" name="songkickId" type="hidden" maxlength="10"/>
         </form>
         <table border="1">
