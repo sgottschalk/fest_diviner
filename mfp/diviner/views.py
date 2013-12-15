@@ -2,7 +2,7 @@ import json
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView, View
 
-from diviner.models import Festival, ArtistSearch
+from diviner.models import Festival, ArtistSearch, Artist
 
 
 # Create your views here.
@@ -32,6 +32,12 @@ class SearchArtistView(View):
 
 class AddArtistView(View):
     def post(self, request, *args, **kwargs):
-        # TODO: add it!
-        print request.POST.get("songkickId")
-        return HttpResponse('hi')
+        id = request.POST.get("songkickId")
+        name = request.POST.get("artistSearchString")
+        festivalUrl = request.POST.get("festivalUrl")
+        # print festival
+
+        # TODO: Make sure this works with multiple festivals
+        artistToAdd = Artist(songkickid=id, name=name, festival=Festival.objects.get(url=festivalUrl))
+        artistToAdd.save()
+        return HttpResponse(status=204)

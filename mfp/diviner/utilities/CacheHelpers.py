@@ -28,7 +28,6 @@ def retrieveRequestJson(url, params):
     :return: the response
     """
     cacheKey = getCacheKeyForRequest(url, params)
-    print cacheKey
     cachedValue = cache.get(cacheKey)
     if cachedValue is not None:
         return cachedValue

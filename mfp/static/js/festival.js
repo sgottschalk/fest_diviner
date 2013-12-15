@@ -5,12 +5,13 @@ $(document).ready(function(){
       delay: 500,
       select: function( event, ui ) {
         event.preventDefault(); // stop from filling in search box
-        $("#artistSearchBox").val(''); // clear out search box text
         $('#songkickId').val(ui.item.value); // fill in hidden input with value
+        $('#artistSearchBox').val(ui.item.label); // fill in text input with value
         $.post($('#festivalHeader').data("festivalId") + '/add', $("#artistSearchForm").serialize(), function(data) {
             // TODO: do we reload here?
-            alert('yes!');
+            console.log("added. data: " + data);
         });
+        $("#artistSearchBox").val(''); // clear out search box text
       }
     });
 });
