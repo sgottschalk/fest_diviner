@@ -8,8 +8,8 @@ $(document).ready(function(){
         $('#songkickId').val(ui.item.value); // fill in hidden input with value
         $('#artistSearchBox').val(ui.item.label); // fill in text input with value
         $.post($('#festivalHeader').data("festivalId") + '/add', $("#artistSearchForm").serialize(), function(data) {
-            // TODO: do we reload here?
-            console.log("added. data: " + data);
+            // TODO: don't reload the whole page
+            window.location.reload();
         });
         $("#artistSearchBox").val(''); // clear out search box text
       }
