@@ -48,8 +48,6 @@ class Artist(models.Model):
     """
     mbid = models.CharField(max_length=36, unique=True, null=True)
     songkickid = models.CharField(max_length=20, primary_key=True)
-    # mbid = models.CharField(max_length=36, primary_key=True)
-    # songkickid = models.CharField(max_length=20, unique=True, null=True)
     name = models.CharField(max_length=100)
     festival = models.ForeignKey(Festival)
     statuses = None

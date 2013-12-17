@@ -20,10 +20,10 @@ body {
     background-color: #91AA9D;
 }
 .status_Probably {
-    background-color: #3E606F;
+    background-color: #4d9bc1;
 }
 .status_Confirmed {
-    background-color: #193441;
+    background-color: #4d9bc1;
     color: #D1DBBD
 }
 
@@ -62,3 +62,9 @@ html, body {
     height: 20px;
     vertical-align: middle;
 }
+
+/* External links */
+a:link {color:#4d9bc1;}      /* unvisited link */
+a:visited {color:#4d9bc1;}  /* visited link */
+a:hover {color:#4d9bc1;}  /* mouse over link */
+a:active {color:#4d9bc1;}  /* selected link */

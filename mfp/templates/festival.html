@@ -40,7 +40,7 @@
                     <tbody>
                         {% for artist in artists %}
                         <tr>
-                            <td class="artistCell">{{artist.name}}</td>
+                            <td class="artistCell"><a href="http://www.songkick.com/artists/{{artist.songkickid}}" target="_blank">{{artist.name}}</a></td>
                             {% for status in artist.statuses %}
                             <td class="status_{{status}}">{{status}}</td>
                             {% endfor %}
