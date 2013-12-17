@@ -12,41 +12,48 @@
     </head>
 
     <body>
-        <div id="pageContainer">
+        <div id="container">
+            <div id="content">
 
-            <h1 id="festivalHeader" data-festival-id="{{festival.url}}">{{festival.name}}</h1>
+                <h1 id="festivalHeader" data-festival-id="{{festival.url}}">{{festival.name}}</h1>
 
-            <hr>
+                <hr>
 
-            <form id="artistSearchForm" method="post">{% csrf_token %}
-                <label for="artistSearchBox">Add artist: </label>
-                <input id="artistSearchBox" name="artistSearchString" type="text"/>
-                <input id="songkickId" name="songkickId" type="hidden" maxlength="10"/>
-                <input id="festivalUrl" name="festivalUrl" type="hidden" value="{{festival.url}}"/>
-            </form>
+                <form id="artistSearchForm" method="post">{% csrf_token %}
+                    <label for="artistSearchBox">Add artist: </label>
+                    <input id="artistSearchBox" name="artistSearchString" type="text"/>
+                    <input id="songkickId" name="songkickId" type="hidden" maxlength="10"/>
+                    <input id="festivalUrl" name="festivalUrl" type="hidden" value="{{festival.url}}"/>
+                </form>
 
-            <hr>
+                <hr>
 
-            <table id="artistTable">
-                <thead>
-                    <tr>
-                        <th>Artist</th>
-                        {% for date in dates %}
-                        <th class="dateCell">{{date.day}}</th>
+                <table id="artistTable">
+                    <thead>
+                        <tr>
+                            <th>Artist</th>
+                            {% for date in dates %}
+                            <th class="dateCell">{{date.day}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for artist in artists %}
+                        <tr>
+                            <td class="artistCell">{{artist.name}}</td>
+                            {% for status in artist.statuses %}
+                            <td class="status_{{status}}">{{status}}</td>
+                            {% endfor %}
+                        </tr>
                         {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for artist in artists %}
-                    <tr>
-                        <td class="artistCell">{{artist.name}}</td>
-                        {% for status in artist.statuses %}
-                        <td class="status_{{status}}">{{status}}</td>
-                        {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="footer">
+                &copy;{% now "Y" %} Sean Gottschalk. Data powered by <a href="http://www.songkick.com" target="_blank"><img src="{% static 'images/SK_badge.png' %}" alt="SongKick" id="songkickFooterImage"/></a>
+            </div>
+
         </div>
 
     <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
