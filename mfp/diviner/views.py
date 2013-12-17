@@ -35,7 +35,6 @@ class AddArtistView(View):
         id = request.POST.get("songkickId")
         name = request.POST.get("artistSearchString")
         festivalUrl = request.POST.get("festivalUrl")
-        # print festival
 
         # TODO: Make sure this works with multiple festivals
         artistToAdd = Artist(songkickid=id, name=name, festival=Festival.objects.get(url=festivalUrl))
