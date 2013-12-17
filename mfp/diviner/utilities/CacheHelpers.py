@@ -34,6 +34,7 @@ def retrieveRequestJson(url, params):
     else:
         h = httplib2.Http()
         urlWithParams = url + "?" + urllib.urlencode(params)
+        print urlWithParams
         resp, content = h.request(urlWithParams, "GET")
         jsonResponse = json.loads(content)
         cache.set(cacheKey, jsonResponse, cacheTtlSeconds)

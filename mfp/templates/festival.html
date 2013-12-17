@@ -6,36 +6,54 @@
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/festival.css' %}" />
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/jquery-ui-1.10.3.custom.min.css' %}" />
+
+        <!-- DataTables CSS -->
+        <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
     </head>
 
     <body>
+        <div id="pageContainer">
 
-        <h1 id="festivalHeader" data-festival-id="{{festival.url}}">{{festival.name}}</h1>
-        <form id="artistSearchForm" method="post">{% csrf_token %}
-            <label for="artistSearchBox">Search for artist: </label>
-            <input id="artistSearchBox" name="artistSearchString" type="text"/>
-            <input id="songkickId" name="songkickId" type="hidden" maxlength="10"/>
-            <input id="festivalUrl" name="festivalUrl" type="hidden" value="{{festival.url}}"/>
-        </form>
-        <table border="1">
-            <tr>
-                <td></td>
-                {% for date in dates %}
-                <th class="dateCell">{{date.day}}</th>
-                {% endfor %}
-            </tr>
-            {% for artist in artists %}
-            <tr>
-                <td class="artistCell">{{artist.name}}</td>
-                {% for status in artist.statuses %}
-                <td class="status_{{status}}">{{status}}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
+            <h1 id="festivalHeader" data-festival-id="{{festival.url}}">{{festival.name}}</h1>
+
+            <hr>
+
+            <form id="artistSearchForm" method="post">{% csrf_token %}
+                <label for="artistSearchBox">Add artist: </label>
+                <input id="artistSearchBox" name="artistSearchString" type="text"/>
+                <input id="songkickId" name="songkickId" type="hidden" maxlength="10"/>
+                <input id="festivalUrl" name="festivalUrl" type="hidden" value="{{festival.url}}"/>
+            </form>
+
+            <hr>
+
+            <table id="artistTable">
+                <thead>
+                    <tr>
+                        <th>Artist</th>
+                        {% for date in dates %}
+                        <th class="dateCell">{{date.day}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for artist in artists %}
+                    <tr>
+                        <td class="artistCell">{{artist.name}}</td>
+                        {% for status in artist.statuses %}
+                        <td class="status_{{status}}">{{status}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
     <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui-1.10.3.custom.min.js' %}"></script>
     <script src="{% static 'js/festival.js' %}"></script>
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
     </body>
 </html>

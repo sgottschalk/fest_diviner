@@ -212,7 +212,8 @@ class ArtistSearch():
         requestUrl = 'http://api.songkick.com/api/3.0/search/artists.json'
         requestParams = {
             'apikey': Constants.songKickApiKey,
-            'query': self.searchString
+            'query': self.searchString,
+            'per_page': Constants.artistSearchResultNumber
         }
 
         # Retrieve and parse the response

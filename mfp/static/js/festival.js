@@ -1,4 +1,14 @@
 $(document).ready(function(){
+    $('#artistTable').dataTable({
+        "bJQueryUI": true,
+        "bPaginate": false,
+        "bInfo": false,
+        "bLengthChange": false,
+        "bSortClasses": false
+    });
+
+    // Set up the search box
+    // TODO: trim whitespace
     $("#artistSearchBox").autocomplete({
       source: "/festivals/artists/search",
       minLength: 2,

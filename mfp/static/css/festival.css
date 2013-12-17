@@ -1,12 +1,28 @@
-.dateCell {
-    background-color: #ffa4a4;
+body {
+    background-color: #EBEBEB;
+    color: #2E2E2E;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
+
+#pageContainer {
+    width: 960px;
+    margin: 0 auto;
+}
+
 .artistCell {
-    background-color: #85d656;
+    background-color: #FCFFF5;
 }
-.status_no {
-    background-color: red;
+
+.status_No {
+    background-color: #D1DBBD;
 }
-.status_maybe {
-    background-color: yellow;
+.status_Maybe {
+    background-color: #91AA9D;
+}
+.status_Probably {
+    background-color: #3E606F;
+}
+.status_Confirmed {
+    background-color: #193441;
+    color: #D1DBBD
 }
