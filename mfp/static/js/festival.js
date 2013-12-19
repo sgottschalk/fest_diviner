@@ -13,6 +13,16 @@ $(document).ready(function(){
       source: "/festivals/artists/search",
       minLength: 2,
       delay: 500,
+      search: function( event, ui ) {
+        $("#noArtistFoundMsg").hide();
+        $("#artistSearchSpinner").show();
+      },
+      response: function( event, ui ) {
+        $("#artistSearchSpinner").hide();
+        if (ui.content.length === 0) {
+            $("#noArtistFoundMsg").show();
+        }
+      },
       select: function( event, ui ) {
         event.preventDefault(); // stop from filling in search box
         $('#songkickId').val(ui.item.value); // fill in hidden input with value

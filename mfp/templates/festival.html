@@ -22,6 +22,8 @@
                 <form id="artistSearchForm" method="post">{% csrf_token %}
                     <label for="artistSearchBox">Add artist: </label>
                     <input id="artistSearchBox" name="artistSearchString" type="text"/>
+                    <img src="{% static 'images/ajax-loader.gif' %}" alt="loading" id="artistSearchSpinner"/>
+                    <span id="noArtistFoundMsg">No artists found</span>
                     <input id="songkickId" name="songkickId" type="hidden" maxlength="10"/>
                     <input id="festivalUrl" name="festivalUrl" type="hidden" value="{{festival.url}}"/>
                 </form>
@@ -61,6 +63,20 @@
     <script src="{% static 'js/festival.js' %}"></script>
     <!-- DataTables -->
     <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+    if (document.location.hostname.search("musicfestivalplanning.com") !== -1) {
+
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-46607700-1', 'musicfestivalplanning.com');
+      ga('send', 'pageview');
+
+    }
+</script>
 
     </body>
 </html>

@@ -8,3 +8,4 @@ musicbrainzngs=0.4
 httplib2==0.8
 memcached=1.4.16
 python-memcached=1.53 (pip install python-memcached)
+django-debug-toolbar==0.11.0

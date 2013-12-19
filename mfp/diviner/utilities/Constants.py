@@ -1,6 +1,7 @@
 songKickApiKey='ipBxS0KlUqMwcdST'
 cacheTtlSeconds = 60 * 60
 artistSearchResultNumber = 10
+haversineDistancePaddingPerDay = 300
 
 # Enumeration for the different statuses
 class DailyStatus:

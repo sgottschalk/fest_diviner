@@ -1,4 +1,5 @@
 import json
+import urllib
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView, View
 
@@ -15,15 +16,18 @@ class FestivalView(TemplateView):
         context['festival'] = festival
         context['dates'] = festival.festdate_set.all()
         context['artists'] = festival.artist_set.all()
+        print context
         # Retrieve the info
         for artist in context['artists']:
             artist.adornStatusPerDay()
+            # TODO: Set the artist in the cache since it does some heavy lifting
+
         return context
 
 
 class SearchArtistView(View):
     def get(self, request, *args, **kwargs):
-        searchTerm = request.GET.get("term", "")
+        searchTerm = urllib.quote_plus(request.GET.get("term", ""))
         artistSearch = ArtistSearch(searchTerm)
         searchResults = artistSearch.executeSearch()
         returnJson = json.dumps([{'label': r.displayName, 'value': r.songkickId} for r in searchResults])
@@ -37,6 +41,7 @@ class AddArtistView(View):
         festivalUrl = request.POST.get("festivalUrl")
 
         # TODO: Make sure this works with multiple festivals
+        # TODO: don't allow duplicates
         artistToAdd = Artist(songkickid=id, name=name, festival=Festival.objects.get(url=festivalUrl))
         artistToAdd.save()
         return HttpResponse(status=204)

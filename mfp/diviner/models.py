@@ -9,6 +9,8 @@ from django.db import models
 from diviner.utilities import Constants
 from diviner.utilities.Constants import DailyStatus
 from diviner.utilities import CacheHelpers
+from diviner.utilities import GeneralUtils
+from diviner.utilities import LocationUtils
 
 
 class Festival(models.Model):
@@ -70,8 +72,56 @@ class Artist(models.Model):
                     self.statuses.append(DailyStatus.NO)
             else:
                 # TODO: See if sasquatch fits into their tour schedule
-                self.statuses.append(DailyStatus.MAYBE)
+                self.statuses.append(self.findPreviousAndNextConcert(concerts, festDate))
+                # self.statuses.append(DailyStatus.MAYBE)
+        # Check if it fits into tour schedule
+        self.parseConcerts(concerts)
         return self
+
+    def findPreviousAndNextConcert(self, concerts, festDate):
+        """
+        Checks the alignment of previously scheduled concerts against festDate.
+
+        :param concerts: Already scheduled concerts around the festival dates
+        :param festDate: The particular day to compare with
+        :return: A DailyStatus
+        """
+        if not concerts:
+            return DailyStatus.MAYBE
+        concertDates = concerts.keys()
+        concertDates.sort()
+
+        insertionPt = GeneralUtils.binary_search(concertDates, festDate)
+
+        # first check edge cases
+        if insertionPt == len(concertDates) or insertionPt == 0:
+            index = (insertionPt - 1) if (insertionPt == len(concertDates)) else insertionPt
+            concertInfoBefore = concerts.get(concertDates[index]).venueInformation
+            daysBetween = abs((concertDates[index] - festDate).days)
+            distanceBetween = LocationUtils.haversine(concertInfoBefore.lat, concertInfoBefore.lng, self.festival.lat, self.festival.lng)
+            if distanceBetween < (Constants.haversineDistancePaddingPerDay * daysBetween):
+                return DailyStatus.PROBABLE
+            else:
+                return DailyStatus.MAYBE
+        else:
+            # This date is sandwiched between other dates
+            concertInfoBefore = concerts.get(concertDates[insertionPt - 1]).venueInformation
+            concertInfoAfter = concerts.get(concertDates[insertionPt]).venueInformation
+            # distance from previous concert to festival
+            distanceToFestival = LocationUtils.haversine(concertInfoBefore.lat, concertInfoBefore.lng, self.festival.lat, self.festival.lng)
+            # distance from festival to next concert
+            distanceFromFestival = LocationUtils.haversine(self.festival.lat, self.festival.lng, concertInfoAfter.lat, concertInfoAfter.lng)
+            # distance from previous concert to next concert
+            distanceNoFestival = LocationUtils.haversine(concertInfoBefore.lat, concertInfoBefore.lng, concertInfoAfter.lat, concertInfoAfter.lng)
+            # TODO: Currently it doesn't take into account the days between like the above case
+            if (distanceToFestival + distanceFromFestival) < (distanceNoFestival + Constants.haversineDistancePaddingPerDay):
+                return DailyStatus.PROBABLE
+            else:
+                return DailyStatus.MAYBE
+
+    def parseConcerts(self, concerts):
+        # LocationUtils.haversine(lat1, lng1, lat2, lng2)
+        pass
 
     def getConcertsForArtist(self, **kwargs):
         """
@@ -114,8 +164,8 @@ class Artist(models.Model):
         return concerts
 
     def __unicode__(self): 
-        return u'[mbid: %s, songkickid: %s, name: %s, festival: %s]' % \
-               (self.mbid, self.songkickid, self.name, self.festival)
+        return u'[mbid: %s, songkickid: %s, name: %s, festival: %s, statuses: %s]' % \
+               (self.mbid, self.songkickid, self.name, self.festival, str(self.statuses))
 
 
 #############################
@@ -167,6 +217,12 @@ class EventInformation():
     def __unicode__(self):
         return u'[date: %s, venueInformation: %s]' % (self.date, self.venueInformation)
 
+    def __str__(self):
+        return self.__unicode__()
+
+    def __repr__(self):
+        return self.__unicode__()
+
 
 class VenueInformation():
     lat = None
@@ -185,6 +241,12 @@ class VenueInformation():
     def __unicode__(self):
         return u'[lat: %s, lng: %s, city: %s, venueName: %s, venueId: %s]' \
                % (self.lat, self.lng, self.city, self.venueName, self.venueId)
+
+    def __str__(self):
+        return self.__unicode__()
+
+    def __repr__(self):
+        return self.__unicode__()
 
 
 class ArtistSearchResult():
@@ -220,6 +282,8 @@ class ArtistSearch():
         if searchResults['status'] != 'ok':
             return None
         results = []
+        if searchResults['totalEntries'] == 0:
+            return results
         for result in searchResults['results']['artist']:
             mbid = None
             if result['identifier'] != []:

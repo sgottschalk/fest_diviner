@@ -20,11 +20,12 @@ body {
     background-color: #91AA9D;
 }
 .status_Probably {
-    background-color: #4d9bc1;
+    background-color: #3E606F;
+    color: #FCFFF5;
 }
 .status_Confirmed {
-    background-color: #4d9bc1;
-    color: #D1DBBD
+    background-color: #193441;
+    color: #FCFFF5;
 }
 
 html, body {
@@ -55,6 +56,16 @@ html, body {
    height: 40px;
    color: #676666;
    font-size: 0.8em;
+}
+
+#artistSearchSpinner {
+    vertical-align: middle;
+    display: none; // default to hidden
+}
+
+#noArtistFoundMsg {
+    font-size: 0.8em;
+    display: none; // default to hidden
 }
 
 #songkickFooterImage {

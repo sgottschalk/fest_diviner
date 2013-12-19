@@ -19,6 +19,10 @@ def getCacheKeyForRequest(url, params):
     return stringToHash.encode('ascii', 'ignore')
 
 
+def getCacheKeyForObject(object):
+    pass
+
+
 def retrieveRequestJson(url, params):
     """
     Abstracts the response caching for a json request.
