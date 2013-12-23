@@ -10,7 +10,7 @@ $(document).ready(function(){
     // Set up the search box
     // TODO: trim whitespace
     $("#artistSearchBox").autocomplete({
-      source: "/festivals/artists/search",
+      source: "/planner/festivals/artists/search",
       minLength: 2,
       delay: 500,
       search: function( event, ui ) {

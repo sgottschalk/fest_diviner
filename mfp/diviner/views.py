@@ -16,7 +16,6 @@ class FestivalView(TemplateView):
         context['festival'] = festival
         context['dates'] = festival.festdate_set.all()
         context['artists'] = festival.artist_set.all()
-        print context
         # Retrieve the info
         for artist in context['artists']:
             artist.adornStatusPerDay()

@@ -100,7 +100,7 @@ STATICFILES_DIRS = (
 )
 
 # TODO: Is this the right thing to do?
-STATIC_ROOT = '/home1/musicfes/public_html/planner/static'
+STATIC_ROOT = '/home1/musicfes/public_html/static'
 
 # Logging
 
